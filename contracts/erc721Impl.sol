@@ -1,6 +1,6 @@
 pragma solidity >=0.5.0 <0.7.0;
 
-import "./erc721.sol";
+import "./ERC721.sol";
 
 contract ERC721Impl is ERC721 {
 
