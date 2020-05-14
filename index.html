@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>myContracts front-end</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script language="javascript" type="text/javascript" src="ERC721_abi.js"></script>
+  </head>
+  <body>
+    <script>
+var provider = new Web3.providers.WebsocketProvider("wss://rinkeby.infura.io/ws/v3/fc2f9f6eb2e54f9c953c465f4f615d0a");
+var web3Socket = new Web3(provider);
+socketInstance =new web3Socket.eth.Contract(ERC721ImplABI, "0x0BC96c70C05892184C72B1d2915533167e965857");
+
+
+socketInstance.events.NewToken((err, events)=>{
+console.log("Listen event new Token",err, events)}
+)
+socketInstance.events.Transfer((err, events)=>{
+console.log("Listen event Transfer",err, events)}
+)
+
+      var web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/fc2f9f6eb2e54f9c953c465f4f615d0a'));
+    
+      var myContracts;
+      var userAccount;
+      var anotherAccount = "0x6A75A4f0b257e872a6370dF3944A6e14E5ec226C";
+
+      function startApp() {
+        var myContractsAddress = "0x0BC96c70C05892184C72B1d2915533167e965857";
+        myContracts = new web3js.eth.Contract(ERC721ImplABI, myContractsAddress);
+        // myContracts.events.NewToken({fromBlock: 0},  function(error, event){ console.log("??",error) })
+        // .on('data', (log) => {
+        //   console.log(`data log on `,log)
+        // })
+        // .on('changed', (log) => {
+        //   console.log(`Changed: ${log}`)
+        // })
+        // .on('error', (log) => {
+        //   console.log(`error:  ${log}`)
+        // })
+        userAccount = "0x1e4B8C9Fa4D58983998a13Bf301DbF1EA07a73bc";
+        //createTokenContract("0369218921");
+        approvedContract("0369218921");
+        //readOwner("0369218921");
+        //burnTokenContract("78910");
+      }
+
+      function readOwner(token){
+        console.log("before readowner");
+        // myContracts.methods.ownerOf(token).send({from: "0x1e4B8C9Fa4D58983998a13Bf301DbF1EA07a73bc"}).then(function (result) {
+        //   console.log("read onwwner ",result);
+        // });
+        const tx = {
+          to: "0x0BC96c70C05892184C72B1d2915533167e965857", 
+          from: "0x1e4B8C9Fa4D58983998a13Bf301DbF1EA07a73bc", 
+          gas: "10000000", 
+          data: myContracts.methods.ownerOf(token).encodeABI() 
+        };
+        const privateKey = '46EF2EC8A366C1F4C472B892EC2E93440E427C116A16538A90A99786339A72C2';
+        const signPromise = web3.eth.accounts.signTransaction(tx, privateKey);
+        signPromise.then((signedTx) => {
+        
+        const sentTx = web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        sentTx.on("receipt", receipt => {
+          // do something when receipt comes back
+          console.log("1",receipt);
+        });
+        sentTx.on("error", err => {
+          // do something on transaction error
+          console.log("4",err);
+        });
+        }).catch((err) => {
+          // do something when promise fails
+          console.log("7",err);
+        });
+      }
+      function createTokenContract(token) {
+        const tx = {
+          to: "0x0BC96c70C05892184C72B1d2915533167e965857", 
+          from: "0x1e4B8C9Fa4D58983998a13Bf301DbF1EA07a73bc", 
+          gas: "10000000", 
+          data: myContracts.methods.mint(token).encodeABI() 
+        };
+        const privateKey = '46EF2EC8A366C1F4C472B892EC2E93440E427C116A16538A90A99786339A72C2';
+        const signPromise = web3.eth.accounts.signTransaction(tx, privateKey);
+        signPromise.then((signedTx) => {
+        
+        const sentTx = web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        sentTx.on("receipt", receipt => {
+          // do something when receipt comes back
+          console.log("1",receipt);
+        });
+        sentTx.on("error", err => {
+          // do something on transaction error
+          console.log("4",err);
+        });
+        }).catch((err) => {
+          // do something when promise fails
+          console.log("7",err);
+        });
+
+    }
+    function approvedContract(token) {
+        const tx = {
+          to: "0x0BC96c70C05892184C72B1d2915533167e965857", 
+          from: "0x1e4B8C9Fa4D58983998a13Bf301DbF1EA07a73bc", 
+          gas: "10000000", 
+          data: myContracts.methods.approve(anotherAccount,token).encodeABI() 
+        };
+        const privateKey = '46EF2EC8A366C1F4C472B892EC2E93440E427C116A16538A90A99786339A72C2';
+        const signPromise = web3.eth.accounts.signTransaction(tx, privateKey);
+        signPromise.then((signedTx) => {
+        
+        const sentTx = web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        sentTx.on("receipt", receipt => {
+          // do something when receipt comes back
+          console.log("1",receipt);
+        });
+        sentTx.on("error", err => {
+          // do something on transaction error
+          console.log("4",err);
+        });
+        }).catch((err) => {
+          // do something when promise fails
+          console.log("7",err);
+        });
+
+    }
+
+    function burnTokenContract(token) {
+        const tx = {
+          to: "0x0BC96c70C05892184C72B1d2915533167e965857", 
+          from: "0x1e4B8C9Fa4D58983998a13Bf301DbF1EA07a73bc", 
+          gas: "10000000", 
+          data: myContracts.methods.burn(token).encodeABI() 
+        };
+        const privateKey = '46EF2EC8A366C1F4C472B892EC2E93440E427C116A16538A90A99786339A72C2';
+        const signPromise = web3.eth.accounts.signTransaction(tx, privateKey);
+        signPromise.then((signedTx) => {
+        
+        const sentTx = web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        sentTx.on("receipt", receipt => {
+          // do something when receipt comes back
+          console.log("1",receipt);
+        });
+        sentTx.on("error", err => {
+          // do something on transaction error
+          console.log("4",err);
+        });
+        }).catch((err) => {
+          // do something when promise fails
+          console.log("7",err);
+        });
+
+    }
+
+      window.addEventListener('load', function() {
+
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+          // Use Mist/MetaMask's provider
+          web3js = new Web3(web3.currentProvider);
+        } else {
+          // Handle the case where the user doesn't have Metamask installed
+          // Probably show them a message prompting them to install Metamask
+        }
+
+        // Now you can start your app & access web3 freely:
+        startApp()
+
+      })
+    </script>
+  </body>
+</html>

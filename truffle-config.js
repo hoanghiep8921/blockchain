@@ -29,7 +29,8 @@ const HDWalletProvider = require("truffle-hdwallet-provider");
 // 1. Initialize LoomTruffleProvider
 
 // Set your own mnemonic here
-const mnemonic = "topic six parent river pottery chuckle tomato mimic token relax because liquid";
+//const mnemonic = "topic six parent river pottery chuckle tomato mimic token relax because liquid";
+const mnemonic = "add symptom unlock grow eyebrow any step coach oblige awake cotton strategy";
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -57,7 +58,7 @@ module.exports = {
       // Special function to setup the provider
       provider: function () {
         // Setting the provider with the Infura Rinkeby address and Token
-        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/58dbca997fd1442fabdf9cc6f675a779")
+        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/fc2f9f6eb2e54f9c953c465f4f615d0a")
       },
       // Network id is 4 for Rinkeby
       network_id: 4
